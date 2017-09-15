@@ -19,6 +19,9 @@ if [ -f `brew --prefix`/etc/bash_completion ]; then
   . `brew --prefix`/etc/bash_completion
 fi
 
+# Load 'npm run' completions
+[[ -r $HOME/.npm_completion ]] && . $HOME/.npm_completion
+
 if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
@@ -36,18 +39,20 @@ parse_git_branch() {
 #   Change Prompt
 #   ------------------------------------------------------------
 
+export PS1="\u@\h \[\033[33;1m\]\W\[\033[m\]\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
+
 
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
 
-source ~/.bash_prompt
-
-for file in ~/.{bash_prompt}; do
-  [ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
+# source ~/.bash_prompt
+#
+# for file in ~/.{bash_prompt}; do
+#   [ -r "$file" ] && [ -f "$file" ] && source "$file";
+# done;
+# unset file;
 
 
 # Ignore the first Ctrl+D so we don't accidentally close a Terminal
@@ -76,7 +81,9 @@ export IGNOREEOF=1
 #   from http://osxdaily.com/2012/02/21/add-color-to-the-terminal-in-mac-os-x/
 #   ------------------------------------------------------------
   export CLICOLOR=1
-  export LSCOLORS=GxFxCxDxBxegedabagaced
+  # export LSCOLORS=GxFxCxDxBxegedabagaced
+  # export LSCOLORS=Exfxcxdxbxegedabagacad
+  export LSCOLORS=ExFxBxDxCxegedabagacad
 
 
 #   -----------------------------
@@ -88,6 +95,7 @@ export IGNOREEOF=1
 # alias mv='mv -iv'                           # Preferred 'mv' implementation
 # alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
 alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
+alias l='ls -lah'
 alias less='less -FSRXc'                    # Preferred 'less' implementation
 # cd() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
 alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
@@ -98,6 +106,8 @@ alias .4='cd ../../../../'                  # Go back 4 directory levels
 alias .5='cd ../../../../../'               # Go back 5 directory levels
 alias .6='cd ../../../../../../'            # Go back 6 directory levels
 # alias edit='subl'                           # edit:         Opens any file in sublime editor
+alias gs="git status"
+alias gd="git diff"
 alias f='open -a Finder ./'                 # f:            Opens current directory in macOS Finder
 alias ~="cd ~"                              # ~:            Go Home
 alias c='clear'                             # c:            Clear terminal display
